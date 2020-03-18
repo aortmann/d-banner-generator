@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        div {
+            margin-top: 5px;
+            margin-bottom: 12px;
+        }
+    </style>
+
+<body style="font-family: Rubik;font-weight: 400">
+    <p style="font-family: Rubik;font-weight: 500;font-weight: 500;">
+        DESKTOP SECUNDARIO
+        |
+        <a href="principal-desktop.html">DESKTOP PRINCIPAL</a>
+        |
+        <a href="mobile.html">MOBILE</a>
+    </p>
+    <canvas id="canvas" width="291" height="265"></canvas>
+    <div>
+        <label>Título grande</label>
+        <input type="text" id="text1" value="PASAJEROS EN DESTINO" />
+    </div>
+    <div>
+        <label>Texto título (opcional)</label>
+        <input type="text" id="text2title" value="" />
+    </div>
+    <div>
+        <label>Texto contenido</label>
+        <textarea id="text2" rows="4" cols="50">
+¿Estás en el extranjero?
+Accedé al formulario de la web del
+consulado para buscar alternativas.
+</textarea>
+<div>
+    <label>Texto del botón (opcional)</label>
+    <input type="text" id="button" />
+</div>
+    </div>
+
+    <button type="button" id="do">Generar</button>
+    <a id="download" download="banner-desktop-secundario.png" href="" onclick="download_img(this);">Descargar como
+        PNG</a>
+</body>
+
+<script>
+    function setup() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#4300d2";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    setup();
+
+    function addTextToImage(text1, text2title, text2, buttonText) {
+        var circle_canvas = document.getElementById("canvas");
+        var context = circle_canvas.getContext("2d");
+        setup();
+
+        //context.lineWidth = 1;
+        context.textBaseline = "top";
+        context.fillStyle = "#ffffff";
+        context.lineStyle = "#ffffff";
+        context.font = "bold 16px Rubik";
+        context.fillText(text1, 24, 32);
+
+        context.font = "500 14px Rubik";
+        context.fillText(text2title, 24, 79);
+
+        context.font = "lighter 14px Rubik";
+        fillTextMultiLine(context, text2, 24, text2title ? 99 : 79);
+    }
+
+
+    function fillTextMultiLine(ctx, text, x, y) {
+        var lineHeight = 20;
+        var lines = text.split("\n");
+        for (var i = 0; i < lines.length; ++i) {
+            ctx.fillText(lines[i], x, y);
+            y += lineHeight;
+        }
+    }
+
+    document.getElementById("do").addEventListener("click", function () {
+        addTextToImage(
+            document.getElementById("text1").value,
+            document.getElementById("text2title").value,
+            document.getElementById("text2").value,
+            document.getElementById("button").value)
+    });
+
+
+    download_img = function (el) {
+        var image = canvas.toDataURL("image/png");
+        el.href = image;
+    };
+</script>
+
+
+</html>

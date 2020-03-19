@@ -17,7 +17,7 @@
         |
         <a href="mobile.html">MOBILE</a>
     </p>
-    <div id="container">
+    <div id="container" style="margin:0;padding:0;display:inline-block">
 
     </div>
     <div id="accionable">
@@ -74,7 +74,7 @@ consulado para buscar alternativas.
         const button = document.querySelector("#button").value.trim();
         
         const html = `
-        <div id="toCanvas" style="width: 604px;height: 265px;background: #4300d2;padding: 35px 24px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start;">
+        <div id="toCanvas" style="margin:0;width: 604px;height: 265px;background: #4300d2;padding: 35px 24px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start;">
         ${text1.length > 0?`
             <span style="font-weight: bold;font-family: Rubik;font-size: 16px;color: white;padding-bottom:16px;">
                 ${text1}
@@ -107,7 +107,7 @@ consulado para buscar alternativas.
                 </div>
             </div>    
         ${button.length > 0?`
-            <span style="width: 139px;height: 36px;border-radius: 24px;border: solid 1px #ffffff;color:white;display:flex;align-items:center;justify-content:center;color:white;font-family: Rubik;font-size:14px;">
+            <span style="align-self: flex-start;padding: 0 8px;min-width: 139px;min-height: 36px;border-radius: 24px;border: solid 1px #ffffff;color:white;display:flex;align-items:center;justify-content:center;color:white;font-family: Rubik;font-size:14px;">
                 ${button}
             </span>
             `:''}
@@ -126,24 +126,24 @@ consulado para buscar alternativas.
     }
 
     const download_img = async function (el) {
-        const toCanvas = document.querySelector("#toCanvas");
+        const toCanvas = document.querySelector("#container");
         const canvas = await html2canvas(toCanvas);
-        downloadCanvas(canvas,"banner-mobile.png");
+        downloadCanvas(canvas,"banner-principal.png");
     };
     const download_imgDouble = async function (el) {
-        const toCanvas = document.querySelector("#toCanvas");
+        const toCanvas = document.querySelector("#container");
         toCanvas.style.transform = "scale(2)";
         const canvas2x = await html2canvas(toCanvas);
         toCanvas.style.transform = "";
-        downloadCanvas(canvas2x,"banner-secundario@2x.png");
+        downloadCanvas(canvas2x,"banner-principal@2x.png");
     };
 
     const download_imgTriple = async function (el) {
-        const toCanvas = document.querySelector("#toCanvas");
+        const toCanvas = document.querySelector("#container");
         toCanvas.style.transform = "scale(3)";
         const canvas2x = await html2canvas(toCanvas);
         toCanvas.style.transform = "";
-        downloadCanvas(canvas2x,"banner-secundario@3x.png");
+        downloadCanvas(canvas2x,"banner-principal@3x.png");
     };
 </script>
 

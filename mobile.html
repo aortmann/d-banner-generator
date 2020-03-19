@@ -32,9 +32,9 @@
         <div>
             <label>Texto contenido</label>
             <textarea id="text2" rows="4" cols="50">
-            ¿Estás en el extranjero?
-            Accedé al formulario de la web del
-            consulado para buscar alternativas.
+¿Estás en el extranjero?
+Accedé al formulario de la web del
+consulado para buscar alternativas.
             </textarea>
             <div>
                 <label>Texto del botón (opcional)</label>
@@ -54,7 +54,7 @@
     const renderBanner = () => {
         const text1 = document.querySelector("#text1").value.trim();
         const text2Title = document.querySelector("#text2title").value.trim();
-        const text2 = document.querySelector("#text2").value.trim();
+        const text2 = document.querySelector("#text2").value.trim().replace();
         const button = document.querySelector("#button").value.trim();
         const html = `
         <div id="toCanvas" style="width: 248px;height: 200px;background: #4300d2;padding: 20px 16px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start">
@@ -69,7 +69,7 @@
             </span>
             `:''}
         ${text2.length > 0?`
-            <span style="font-family: Rubik;font-size: 13px;color: white;;padding-bottom:16px; flex:1;line-height:20px">
+            <span style="font-family: Rubik;font-size: 13px;color: white;;padding-bottom:16px; flex:1;line-height:20px;white-space: pre-line;">
                 ${text2}
             </span>
             `:''}
@@ -87,14 +87,17 @@
 
     document.querySelector("#accionable").addEventListener("keyup", renderBanner);
 
-    const downloadCanvas = (canvas) => {
+    const downloadCanvas = (canvas,name) => {
         var image = canvas.toDataURL("image/png");
-        download(image,'banner-mobile.png','image/png');
+        download(image,name,'image/png');
     }
 
     download_img = async function (el) {
         const toCanvas = document.querySelector("#toCanvas");
-        html2canvas(toCanvas).then(canvas=>downloadCanvas(canvas,"banner-mobile.png"));
+        const canvas = await html2canvas(toCanvas);
+        downloadCanvas(canvas,"banner-mobile.png");
+        const canvas2x = await html2canvas(toCanvas,{scale:2});
+        downloadCanvas(canvas2x,"banner-mobile@2x.png");
     };
 </script>
 

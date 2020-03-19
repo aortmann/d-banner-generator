@@ -17,87 +17,103 @@
         |
         <a href="mobile.html">MOBILE</a>
     </p>
-    <canvas id="canvas" width="291" height="265"></canvas>
-    <div>
-        <label>Título grande</label>
-        <input type="text" id="text1" value="PASAJEROS EN DESTINO" />
+    <div id="container">
+
     </div>
-    <div>
-        <label>Texto título (opcional)</label>
-        <input type="text" id="text2title" value="" />
-    </div>
-    <div>
-        <label>Texto contenido</label>
-        <textarea id="text2" rows="4" cols="50">
+    <div id="accionable">
+        <div>
+            <label>Título grande</label>
+            <input type="text" id="text1" value="PASAJEROS EN DESTINO" />
+        </div>
+        <div>
+            <label>Texto título (opcional)</label>
+            <input type="text" id="text2title" value="" />
+        </div>
+        <div>
+            <label>Texto contenido</label>
+            <textarea id="text2" rows="4" cols="50">
 ¿Estás en el extranjero?
 Accedé al formulario de la web del
 consulado para buscar alternativas.
-</textarea>
-<div>
-    <label>Texto del botón (opcional)</label>
-    <input type="text" id="button" />
-</div>
-    </div>
-
-    <button type="button" id="do">Generar</button>
-    <a id="download" download="banner-desktop-secundario.png" href="" onclick="download_img(this);">Descargar como
-        PNG</a>
+            </textarea>
+            <div>
+                <label>Texto del botón (opcional)</label>
+                <input type="text" id="button" />
+            </div>
+        </div>
+    </div>    
+    <button id="download" onclick="download_img(this);">Descargar como
+        PNG</button>
+    <button id="download" onclick="download_imgDouble(this);">Descargar como
+        PNG 2x</button> 
+    <button id="download" onclick="download_imgTriple(this);">Descargar como
+        PNG 3x</button>        
 </body>
+<script src="./html2canvas.min.js"></script>
+<script src="./download.js"></script>
 
 <script>
-    function setup() {
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#4300d2";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const renderBanner = () => {
+        const text1 = document.querySelector("#text1").value.trim();
+        const text2Title = document.querySelector("#text2title").value.trim();
+        const text2 = document.querySelector("#text2").value.trim().replace(/\n/g,"<br/>");
+        const button = document.querySelector("#button").value.trim();
+        const html = `
+        <div id="toCanvas" style="width: 291px;height: 265px;background: #4300d2;padding: 35px 24px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start;">
+        ${text1.length > 0?`
+            <span style="font-weight: bold;font-family: Rubik;font-size: 16px;color: white;padding-bottom:16px;">
+                ${text1}
+            </span>
+            `:''}
+        ${text2Title.length > 0?`
+            <span style="font-family: Rubik;font-size: 13px;font-weight: bold; color: white;line-height:20px">
+                ${text2Title}
+            </span>
+            `:''}
+        ${text2.length > 0?`
+            <span style="font-family: Rubik;font-size: 13px;color: white;;padding-bottom:16px; flex:1;line-height:20px;">
+                ${text2}
+            </span>
+            `:''}
+        ${button.length > 0?`
+            <span style="width: 139px;height: 36px;border-radius: 24px;border: solid 1px #ffffff;color:white;display:flex;align-items:center;justify-content:center;color:white;font-family: Rubik;font-size:14px;">
+                ${button}
+            </span>
+            `:''}
+    </div>
+        `;
+        document.querySelector("#container").innerHTML = html;
     }
 
-    setup();
+    renderBanner();
 
-    function addTextToImage(text1, text2title, text2, buttonText) {
-        var circle_canvas = document.getElementById("canvas");
-        var context = circle_canvas.getContext("2d");
-        setup();
+    document.querySelector("#accionable").addEventListener("keyup", renderBanner);
 
-        //context.lineWidth = 1;
-        context.textBaseline = "top";
-        context.fillStyle = "#ffffff";
-        context.lineStyle = "#ffffff";
-        context.font = "bold 16px Rubik";
-        context.fillText(text1, 24, 32);
-
-        context.font = "500 14px Rubik";
-        context.fillText(text2title, 24, 79);
-
-        context.font = "lighter 14px Rubik";
-        fillTextMultiLine(context, text2, 24, text2title ? 99 : 79);
-    }
-
-
-    function fillTextMultiLine(ctx, text, x, y) {
-        var lineHeight = 20;
-        var lines = text.split("\n");
-        for (var i = 0; i < lines.length; ++i) {
-            ctx.fillText(lines[i], x, y);
-            y += lineHeight;
-        }
-    }
-
-    document.getElementById("do").addEventListener("click", function () {
-        addTextToImage(
-            document.getElementById("text1").value,
-            document.getElementById("text2title").value,
-            document.getElementById("text2").value,
-            document.getElementById("button").value)
-    });
-
-
-    download_img = function (el) {
+    const downloadCanvas = (canvas,name) => {
         var image = canvas.toDataURL("image/png");
-        el.href = image;
+        download(image,name,'image/png');
+    }
+
+    const download_img = async function (el) {
+        const toCanvas = document.querySelector("#toCanvas");
+        const canvas = await html2canvas(toCanvas);
+        downloadCanvas(canvas,"banner-mobile.png");
+    };
+    const download_imgDouble = async function (el) {
+        const toCanvas = document.querySelector("#toCanvas");
+        toCanvas.style.transform = "scale(2)";
+        const canvas2x = await html2canvas(toCanvas);
+        toCanvas.style.transform = "";
+        downloadCanvas(canvas2x,"banner-secundario@2x.png");
+    };
+
+    const download_imgTriple = async function (el) {
+        const toCanvas = document.querySelector("#toCanvas");
+        toCanvas.style.transform = "scale(3)";
+        const canvas2x = await html2canvas(toCanvas);
+        toCanvas.style.transform = "";
+        downloadCanvas(canvas2x,"banner-secundario@3x.png");
     };
 </script>
 
-
-</html>

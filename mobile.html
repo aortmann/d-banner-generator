@@ -60,7 +60,7 @@ consulado para buscar alternativas.
         const text2 = document.querySelector("#text2").value.trim().replace(/\n/g,"<br/>");
         const button = document.querySelector("#button").value.trim();
         const html = `
-        <div id="toCanvas" style="width: 248px;height: 200px;background: #4300d2;padding: 20px 16px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start">
+        <div id="toCanvas" style="width: 248px;height: 200px;background: #4300d2;padding: 20px 16px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start;">
         ${text1.length > 0?`
             <span style="font-weight: bold;font-family: Rubik;font-size: 16px;color: white;padding-bottom:16px;">
                 ${text1}
@@ -98,13 +98,7 @@ consulado para buscar alternativas.
     const download_img = async function (el) {
         const toCanvas = document.querySelector("#toCanvas");
         const canvas = await html2canvas(toCanvas);
-        //downloadCanvas(canvas,"banner-mobile.png");
-        const toCanvas2x = toCanvas.cloneNode(true);
-        toCanvas2x.style.transform = "scale(2)";
-        console.log(toCanvas2x);
-        const canvas2x = await html2canvas(toCanvas2x);
-        console.log('done!')
-        downloadCanvas(canvas2x,"banner-mobile@2x.png");
+        downloadCanvas(canvas,"banner-mobile.png");
     };
     const download_imgDouble = async function (el) {
         const toCanvas = document.querySelector("#toCanvas");

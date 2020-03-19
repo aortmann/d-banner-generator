@@ -42,9 +42,12 @@ consulado para buscar alternativas.
             </div>
         </div>
     </div>    
-    <button type="button" id="do">Generar</button>
     <button id="download" onclick="download_img(this);">Descargar como
         PNG</button>
+    <button id="download" onclick="download_imgDouble(this);">Descargar como
+        PNG 2x</button> 
+    <button id="download" onclick="download_imgTriple(this);">Descargar como
+        PNG 3x</button>        
 </body>
 <script src="./html2canvas.min.js"></script>
 <script src="./download.js"></script>
@@ -54,7 +57,7 @@ consulado para buscar alternativas.
     const renderBanner = () => {
         const text1 = document.querySelector("#text1").value.trim();
         const text2Title = document.querySelector("#text2title").value.trim();
-        const text2 = document.querySelector("#text2").value.trim().replace();
+        const text2 = document.querySelector("#text2").value.trim().replace(/\n/g,"<br/>");
         const button = document.querySelector("#button").value.trim();
         const html = `
         <div id="toCanvas" style="width: 248px;height: 200px;background: #4300d2;padding: 20px 16px;box-sizing: border-box;display: flex;flex-direction: column;justify-content:flex-start">
@@ -69,12 +72,12 @@ consulado para buscar alternativas.
             </span>
             `:''}
         ${text2.length > 0?`
-            <span style="font-family: Rubik;font-size: 13px;color: white;;padding-bottom:16px; flex:1;line-height:20px;white-space: pre-line;">
+            <span style="font-family: Rubik;font-size: 13px;color: white;;padding-bottom:16px; flex:1;line-height:20px;">
                 ${text2}
             </span>
             `:''}
         ${button.length > 0?`
-            <span style="width: 139px;height: 36px;border-radius: 24px;border: solid 1px #ffffff;color:white;display:flex;align-items:center;justify-content:center;color:white;">
+            <span style="width: 139px;height: 36px;border-radius: 24px;border: solid 1px #ffffff;color:white;display:flex;align-items:center;justify-content:center;color:white;font-family: Rubik;font-size:14px;">
                 ${button}
             </span>
             `:''}
@@ -92,12 +95,31 @@ consulado para buscar alternativas.
         download(image,name,'image/png');
     }
 
-    download_img = async function (el) {
+    const download_img = async function (el) {
         const toCanvas = document.querySelector("#toCanvas");
         const canvas = await html2canvas(toCanvas);
-        downloadCanvas(canvas,"banner-mobile.png");
-        const canvas2x = await html2canvas(toCanvas,{scale:2});
+        //downloadCanvas(canvas,"banner-mobile.png");
+        const toCanvas2x = toCanvas.cloneNode(true);
+        toCanvas2x.style.transform = "scale(2)";
+        console.log(toCanvas2x);
+        const canvas2x = await html2canvas(toCanvas2x);
+        console.log('done!')
         downloadCanvas(canvas2x,"banner-mobile@2x.png");
+    };
+    const download_imgDouble = async function (el) {
+        const toCanvas = document.querySelector("#toCanvas");
+        toCanvas.style.transform = "scale(2)";
+        const canvas2x = await html2canvas(toCanvas);
+        toCanvas.style.transform = "";
+        downloadCanvas(canvas2x,"banner-mobile@2x.png");
+    };
+
+    const download_imgTriple = async function (el) {
+        const toCanvas = document.querySelector("#toCanvas");
+        toCanvas.style.transform = "scale(3)";
+        const canvas2x = await html2canvas(toCanvas);
+        toCanvas.style.transform = "";
+        downloadCanvas(canvas2x,"banner-mobile@3x.png");
     };
 </script>
 
